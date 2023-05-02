@@ -20,14 +20,6 @@ $(document).ready(function () {
       description: description
     }
 
-    // here is where you would check to see if your savedNotesArray has
-    // an item with id value of your var id
-    // if the array has an item with id value = var id, then splice the item from the array, passing in the index you found with .findIndex() method as the first argument,second argument is 1, and then the i
-    // const theIndex = savedNotesArray.findIndex();
-    // if theIndex returns -1, then don't do anything else on this
-    // otherwise:
-    // savedNotesArray.splice(theIndex, 1)
-    
     savedNotesArray.push(obj)
     // Save description to local storage
     localStorage.setItem("savedNotes", JSON.stringify(savedNotesArray))
@@ -59,15 +51,6 @@ $(document).ready(function () {
   }
   updateHour();
   setInterval(updateHour, 1000);
-
-
-
-  // var id = $(this).attr("id");
-  // var description = localStorage.getItem(id);
-  // if (description !== null) {
-  //   $(this).children(".description").val(description);
-  // }
-
 
 
 
