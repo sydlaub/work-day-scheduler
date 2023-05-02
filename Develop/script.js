@@ -1,7 +1,7 @@
 // Wrap all code that interacts with the DOM in a call to jQuery to ensure that
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
-$(function () {
+$(document).ready(function () {
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
   // local storage. HINT: What does `this` reference in the click listener
@@ -13,7 +13,7 @@ $(function () {
 
  $(".saveBtn").on("click", function(){
   // get id and description from the nearest time-block div
-  var id = $(this).closest('.time-block').attr('id');
+  var id = $(this).siblings('.time-block').attr('id');
   var description = $(this).siblings(".description").val();
   // Save description to local storage
   localStorage.setItem(id, description)
@@ -27,30 +27,44 @@ $(function () {
 
 
   // loop through each time-block div
+  function updateHour() {
+    // get current time using js
+    var currentHour = moment().hour();
 
+  // loop through each time-block div
   $('.time-block').each(function(){
     // get the hour from the div's id
     var blockHour = parseInt($(this).attr("id"));
     
     // add or remove past, present and future classes based on current hour
-    if (blockHour < currentDate) {
+    if (blockHour < currentHour) {
       $(this).removeClass("present future").addClass("past");
-    } else if (blockHour === currentDate) {
+    } else if (blockHour === currentHour) {
       $(this).removeClass("past future").addClass("present");
-    } else (blockHour > currentDate) {
+    } else {
       $(this).removeClass("past present").addClass("future");
     }
     });
 
 
-
-  // TODO: Add code to get any user input that was saved in localStorage and set
-  // the values of the corresponding textarea elements. HINT: How can the id
-  // attribute of each time-block be used to do this?
-  //
-  // TODO: Add code to display the current date in the header of the page.
-  function currentDate() {
-    // get current date
-    var currentDate = moment().hour()
   }
+  updateHour();
+  setInterval(updateHour, 1000);
+
+
+  //code to get any user input that was saved in localStorage and set the values of the corresponding textarea elements
+$(".time-block").each(function(){
+  var id = $(this).attr("id");
+  var description = localStorage.getItem(id);
+  if (description !== null) {
+    $(this).children(".description").val(description);
+  }
+})
+
+
+
+//Add code to display the current date in the header of the page.
+var currentDay = moment().format("dddd, MMMM Do");
+$("#currentDay").text(currentDay);
+
 });
